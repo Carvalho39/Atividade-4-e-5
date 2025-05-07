@@ -4,11 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Formulário Enquete </title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
     <h1>Qual a sua estação favorita?</h1>
     
-    <form action="enquete.php" method="POST">
+    <form id="formenquente" method="POST">
         <input type="radio" id="est1" name="est" value="Verão" required>
         <label for="est1">Verão</label><br>
         
@@ -23,5 +24,28 @@
         
         <input type="submit" value="Votar">
     </form>
+    <div id="resultado" style="margin-top: 20px;"></div>
+    <script>
+    document.getElementById('formenquente').addEventListener('submit', function(event) {
+        event.preventDefault(); 
+
+        const form = document.getElementById('formenquente');
+        const dados = new FormData(form);
+
+        fetch('/atividade4/atvs/processa_enquete.php', {
+            method: 'POST',
+            body: dados
+        })
+        .then(resposta => resposta.text())
+        .then(resultado => {
+            document.getElementById('resultado').innerHTML = resultado;
+            form.reset(); 
+        })
+        .catch(error => {
+            document.getElementById('resultado').innerHTML = 'Erro no envio.';
+            console.error(error);
+        });
+    });
+    </script>
 </body>
 </html>

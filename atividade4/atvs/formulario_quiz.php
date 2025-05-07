@@ -4,11 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Formulário Quiz</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
     <h1>Quiz</h1>
     
-    <form action="quiz.php" method="POST">
+    <form id="formquiz" method="POST">
         <p>1. Qual é a capital do Brasil?</p>
         <input type="radio" id="q1a" name="q1" value="a"> <label for="q1a">São Paulo</label><br>
         <input type="radio" id="q1b" name="q1" value="b"> <label for="q1b">Rio de Janeiro</label><br>
@@ -39,5 +40,28 @@
         
         <input type="submit" value="Enviar Respostas">
     </form>
+    <div id="resultado" style="margin-top: 20px;"></div>
+    <script>
+    document.getElementById('formquiz').addEventListener('submit', function(event) {
+        event.preventDefault(); 
+
+        const form = document.getElementById('formquiz');
+        const dados = new FormData(form);
+
+        fetch('/atividade4/atvs/processa_quiz.php', {
+            method: 'POST',
+            body: dados
+        })
+        .then(resposta => resposta.text())
+        .then(resultado => {
+            document.getElementById('resultado').innerHTML = resultado;
+            form.reset(); 
+        })
+        .catch(error => {
+            document.getElementById('resultado').innerHTML = 'Erro no envio.';
+            console.error(error);
+        });
+    });
+    </script>
 </body>
 </html>

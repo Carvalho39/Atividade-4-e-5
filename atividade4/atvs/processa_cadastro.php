@@ -9,3 +9,4 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         echo "<span style='color: green;'>Usuário '$nome' <br>Email: $email<br>Idade: $idade <br>Cadastrado com sucesso!</span>";
     } 
 }
+?>
